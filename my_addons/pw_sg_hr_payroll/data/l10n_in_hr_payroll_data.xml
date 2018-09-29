@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+        <!-- Contribution Register -->
+
+        <record id="hr_register_cpf_fund" model="hr.contribution.register">
+            <field name="name">Central Provident Fund</field>
+        </record>
+
+        <record id="hr_other_deduction_register" model="hr.contribution.register">
+            <field name="name">Register for Other Deduction from Employer</field>
+        </record>
+
+
+
+                <!-- HR Salary Rules Categories -->
+
+        <record id="ADD" model="hr.salary.rule.category">
+            <field name="name">ADDITIONS</field>
+            <field name="code">ADD</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_EMPLOYER" model="hr.salary.rule.category">
+            <field name="name">CPF - Employer</field>
+            <field name="code">CAT_CPF_EMPLOYER</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_EMPLOYEE" model="hr.salary.rule.category">
+            <field name="name">CPF - Employee</field>
+            <field name="code">CAT_CPF_EMPLOYEE</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_TOTAL" model="hr.salary.rule.category">
+            <field name="name">Total CPF</field>
+            <field name="code">CAT_CPF_TOTAL</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="DED_INCL_CPF" model="hr.salary.rule.category">
+            <field name="name">Deduction (Inclusive CPF)</field>
+            <field name="code">DED_INCL_CPF</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_FWL" model="hr.salary.rule.category">
+            <field name="name">CPF - FWL</field>
+            <field name="code">CAT_CPF_FWL</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_SDL" model="hr.salary.rule.category">
+            <field name="name">CPF - SDL</field>
+            <field name="code">CAT_CPF_SDL</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_SVC_EE" model="hr.salary.rule.category">
+            <field name="name">CPF Agency Services (Employee)</field>
+            <field name="code">CAT_CPF_SVC_EE</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="CAT_CPF_SVC_ER" model="hr.salary.rule.category">
+            <field name="name">CPF Agency Services (Employer)</field>
+            <field name="code">CAT_CPF_SVC_ER</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <!-- Hr Salary Rules for initial salary rules-->
+        <record id="hr_payroll.hr_rule_taxable" model="hr.salary.rule">
+            <field name="name">Gross Salary</field>
+                <field name="code">GROSS</field>
+            <field name="sequence">501</field>
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="amount_python_compute">result = categories.BASE + categories.ALW</field>
+
+        </record>
+
+        <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
+            <field name="name">Basic Salary</field>
+            <field name="code">BASIC</field>
+            <field name="sequence">101</field>
+        </record>
+
+        <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
+            <field name="name">Net Salary</field>
+            <field name="code">NET</field>
+            <field name="sequence">901</field>
+        </record>
+
+        <!-- Hr Salary Rules for allowance-->
+
+        <record id="hr_salary_trans_allownce" model="hr.salary.rule">
+            <field name="code">TCA</field>
+            <field name="name">Transport/Conveyance Allownace</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">fix</field>
+            <field eval="800.0" name="amount_fix"/>
+            <field name="sequence" eval="201"/>
+            <field name="note">A conveyance allowance refers to an amount of money reimbursed to someone for the operation of a vehicle or the riding of a vehicle. The allowance is typically a designated amount or percentage of total transportation expenses that is referenced in a country's tax laws or code. Organizations and private or public businesses may also offer a conveyance allowance in addition to reimbursing employees or members for transportation expenses. In this instance, the conveyance allowance may identify an unusual transport occurrence that may not be covered by a designated travel expense report such as travel to a specific job site that requires a daily bus or taxi ride.</field>
+        </record>
+
+        <record id="hr_salary_rule_bonus" model="hr.salary.rule">
+            <field name="code">BONUS</field>
+            <field name="name">Bonus</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="sequence" eval="210"/>
+            <field name="note">This would be fully taxable based on Bonus.</field>
+        </record>
+
+        <record id="hr_salary_rule_medical" model="hr.salary.rule">
+            <field name="code">MEDA</field>
+            <field name="name">Medical Reimbursement</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="sequence" eval="220"/>
+            <field name="note">This component is on-taxable up to 15000 per year (or Rs 1250 per month) on producing medical bills.</field>
+        </record>
+
+        <record id="hr_salary_rule_telephone" model="hr.salary.rule">
+            <field name="code">TELR</field>
+            <field name="name">Telephone Reimbursement</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="sequence" eval="230"/>
+            <field name="note">In some of the cases, companies may provide a component for telephone bills.Employees may provide actual phone usage bills to reimburse this component and make it non-taxable.
+            </field>
+        </record>
+
+        <record id="hr_salary_rule_prof_develope" model="hr.salary.rule">
+            <field name="code">PDA</field>
+            <field name="name">Professional Development Allowance</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">fix</field>
+            <field eval="0.0" name="amount_fix"/>
+            <field name="sequence" eval="240"/>
+        </record>
+
+        <record id="hr_payroll_rule_car" model="hr.salary.rule">
+            <field name="code">CAR</field>
+            <field name="name">Car Expenses Reimbursement</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="sequence" eval="250"/>
+            <field name="note">In case company provides component for this and employee use self owned car for official and personal purposes, Rs 1800 per month would be non-taxable on showing bills for fuel or can maintenance. This amount would be Rs 2400 in case car is more capacity than 1600cc.</field>
+        </record>
+
+        <record id="hr_salary_rule_internet" model="hr.salary.rule">
+            <field name="code">INT</field>
+            <field name="name">Internet Expense Reimbursement</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="sequence" eval="260"/>
+            <field name="note">Employer may also provide reimbursement of internet expenses and thus this would become non taxable.</field>
+        </record>
+
+
+        <!--hr salary rules for Deductions -->
+
+        <record id="hr_payslip_rule_cpf_employee" model="hr.salary.rule">
+            <field name="code">CPFEE_SPR_SIN</field>
+            <field name="name">CPF Employee's Contribution</field>
+            <field name="category_id" ref="CAT_CPF_EMPLOYEE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">Employer contribution does not become part of employee’s income and hence income tax is not payable on this part.</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="601"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_mbmf" model="hr.salary.rule">
+            <field name="code">CPF_MBMF</field>
+            <field name="name">CPF - MBMF</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">MBMF</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="610"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_sinda" model="hr.salary.rule">
+            <field name="code">CPF_SINDA</field>
+            <field name="name">CPF - SINDA</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">SINDA</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="620"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_cdac" model="hr.salary.rule">
+            <field name="code">CPF_CDAC</field>
+            <field name="name">CPF - CDAC</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">CDAC</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="630"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_ecf" model="hr.salary.rule">
+            <field name="code">CPF_ECF</field>
+            <field name="name">CPF - ECF</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">E</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="620"/>
+        </record>
+
+        <record id="hr_payslip_rule_ode" model="hr.salary.rule">
+            <field name="code">ODE</field>
+            <field name="name">Other Deduction from Employer</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="register_id" ref="hr_other_deduction_register"/>
+            <field name="sequence" eval="690"/>
+        </record>
+
+        <!--hr salary rules for Employer Contribution -->
+        <record id="hr_payslip_rule_cpf_employer" model="hr.salary.rule">
+            <field name="code">CPFER_SPR_SIN</field>
+            <field name="name">CPF Employer's Contribution</field>
+            <field name="category_id" ref="CAT_CPF_EMPLOYER"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">Employer contribution does not become part of employee’s income and hence income tax is not payable on this part.</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="701"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_sdl" model="hr.salary.rule">
+            <field name="code">CPF_SDL</field>
+            <field name="name">CPF - SDL</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BNS and inputs.BNS.amount</field>
+            <field name= "note">CPF - SDL</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="710"/>
+        </record>
+
+        <record id="hr_payslip_rule_cpf_fwl" model="hr.salary.rule">
+            <field name="code">MOM_FWL</field>
+            <field name="name">Foreign Worker Levy</field>
+            <field name="category_id" ref="CAT_CPF_SVC_EE"/>
+            <field name="amount_select">fix</field>
+            <field eval="400.0" name="amount_fix"/>
+            <field name= "note">Foreign Worker Levy</field>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="sequence" eval="720"/>
+        </record>
+
+        <!--hr salary rules for Others -->
+        <record id="hr_payslip_rule_cpf_total" model="hr.salary.rule">
+            <field name="code">CPFTOTAL_SPR_SIN</field>
+            <field name="name">Total CPF</field>
+            <field name="category_id" ref="CAT_CPF_TOTAL"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (categories.CAT_CPF_EMPLOYEE + categories.CAT_CPF_EMPLOYER)</field>
+            <field name="sequence" eval="750"/>
+            <field name="register_id" ref="hr_register_cpf_fund"/>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="note">Both the employees and employer contribute to the fund at the rate of 12% of the basic wages, dearness allowance and retaining allowance, if any, payable to employees per month.</field>
+        </record>
+
+
+
+
+
+        <!-- Rule Inputs -->
+
+
+        <record id="hr_rule_input_bonus" model="hr.rule.input">
+            <field name="code">BNS</field>
+            <field name="name">Bonus of Employee</field>
+            <field name="input_id" ref="hr_salary_rule_bonus"/>
+        </record>
+
+
+
+
+</flectra>
